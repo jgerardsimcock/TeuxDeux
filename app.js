@@ -3,19 +3,17 @@ var jade = require('jade');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-
-
 var app = express();
 
 
-app.get('/', function(req, res){
-  res.send('Hello World');
-});
+// app.get('/', function(req, res){
+//   res.send('Hello World');
+// });
 
 //Get
 
-app.get('/../templates/tasks', function(req, res){
-  res.render('list.jade');
+app.get('/', function(req, res){
+  res.render('tasks/list.jade');
 });
 
 //POST  
@@ -24,6 +22,8 @@ app.get('/../templates/tasks', function(req, res){
 
 //DELETE
 
+
+app.set('views', __dirname + '/templates');
 
 app.use(bodyParser.urlencoded({
   extended: true
