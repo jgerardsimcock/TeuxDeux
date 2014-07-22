@@ -12,13 +12,22 @@ app.get('/', function(req, res){
   res.send('Hello World');
 });
 
+//Get
 
+app.get('/../templates/tasks', function(req, res){
+  res.render('list.jade');
+});
+
+//POST  
+
+//UPDATE
+
+//DELETE
 
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
 app.use(bodyParser.json())
 app.use(methodOverride());
 
