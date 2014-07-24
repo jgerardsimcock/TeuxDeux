@@ -1,3 +1,12 @@
-extends ./layout.jade
+extends ../layout
 
-h1 Some content
+block content
+  h1 Some content
+  
+    each task in tasks
+      ul
+      a(href='tasks/#{task._id}')
+        //- HOW CAN I GET THIS TO RENDER MORE CLEANLY
+        span.title=task.title
+        br
+        span.notes=task.notes
