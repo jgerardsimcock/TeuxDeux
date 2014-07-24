@@ -1,4 +1,12 @@
 extends ../layout
 
 block content
-  h1 test content
+  h1 Some content
+  
+    each task in tasks
+      ul
+      a(href='tasks/#{task._id}')
+        //- HOW CAN I GET THIS TO RENDER MORE CLEANLY
+        span.title=tasks.title
+        br
+        span.notes=tasks.notes

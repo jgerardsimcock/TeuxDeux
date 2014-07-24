@@ -10,7 +10,7 @@ mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux')
 var app = express();
 
 app.set('views', __dirname + '/templates');
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -43,13 +43,16 @@ app.get('/tasks/new', function(req, res){
 // GET SHOW
 app.get('/tasks/:id', function(req, res){
 
-  res.render('tasks/edit.jade');
+Task.findById(req.params.id, function (err, tasks){
+  console.log(tasks);
+    res.render('tasks/show.jade', {tasks: tasks});
+  });
 });
 
 // GET EDIT
 
 app.get('/tasks/:id/edit', function(req, res){
-console.log(req.params.id)
+console.log()
   res.render('tasks/list.jade');
 });
 
