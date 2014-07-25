@@ -12,6 +12,7 @@ var app = express();
 
 //THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
 app.set('views', __dirname + '/templates');
+app.set('views', __dirname + '/public')
 
 //THIS CONNECTS THE MIDDLEWARE THAT EXPRESS NEEDS 
 app.use(bodyParser.json());
