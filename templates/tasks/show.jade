@@ -2,5 +2,8 @@ extends ../layout
 
 block content
   ul
-    li= tasks.title
-    li= tasks.notes
+    li= task.title
+    li= task.notes
+  
+  a(href='/tasks/#{task._id}/edit')
+    button Edit Task

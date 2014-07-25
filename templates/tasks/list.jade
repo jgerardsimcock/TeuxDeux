@@ -2,11 +2,15 @@ extends ../layout
 
 block content
   h1 Some content
-  
-    each task in tasks
-      ul
-      a(href='tasks/#{task._id}')
-        //- HOW CAN I GET THIS TO RENDER MORE CLEANLY
-        span.title=task.title
-        br
-        span.notes=task.notes
+    ul
+      each task in taskCollection
+        li
+          a(href='tasks/#{task._id}')
+            span.title= task.title
+            br
+            span.notes= task.notes
+            br
+          form(action="/tasks/#{task._id}?_method=DELETE", method="POST" enctype="application/x-www-form-urlencoded")
+            button Delete task  
+
+        

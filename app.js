@@ -9,84 +9,100 @@ mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux')
 //THIS VARIABLE IS SO WE CAN CALL METHODS IN EXPRESS ON THE OUR APPLICATION
 var app = express();
 
+
+//THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
 app.set('views', __dirname + '/templates');
+
+//THIS CONNECTS THE MIDDLEWARE THAT EXPRESS NEEDS 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(methodOverride());
+app.use(methodOverride('_method'));
 
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
 var Schema = mongoose.Schema;
 
+// THIS INITIALIZES THE SCHEMA WITH THE VARIABLE TUEXDEUXSCHEMA
 var teuxdeuxSchema = new Schema({
-  title : String,
-  notes: String
-
+  title : String, //THIS IS ONE FIELD
+  notes: String,  //THIS IS ANOTHER FIELD TO SEARCH ON
+  created_at: Date
 });
 
+//THIS ASSIGNS A VARIABLE TASK SO WE CAN CALL METHODS IN MONGOOSE 
 var Task = mongoose.model('tasks', teuxdeuxSchema);
 
 //Get LIST
-
+//The user sees url/tasks and this sends a get request to server
 app.get('/tasks', function(req, res){
-  Task.find(function (err, tasks){
-    res.render('tasks/list.jade', {tasks: tasks});
+  Task.find(function (err, task){
+    res.render('tasks/list.jade', {taskCollection: task});
   });
 });
 
 // GET NEW
+//THIS RENDERS THE PAGE WITH THE EMPTY FORMS TO BE SUBMITTED
 app.get('/tasks/new', function(req, res){
   res.render('tasks/new.jade');
 });
 
 // GET SHOW
 app.get('/tasks/:id', function(req, res){
-
-Task.findById(req.params.id, function (err, tasks){
-  console.log(tasks);
-    res.render('tasks/show.jade', {tasks: tasks});
+  //THIS CALLS THE FINDBYID METHOD ON OUR TASK MODEL
+Task.findById(req.param.id, function (err, task){
+    res.render('tasks/show.jade', {task: task});
   });
 });
 
-// GET EDIT
+//I WANT TO CREATE A BUTTON THAT LINKS TO THE EDIT URL FROM THE SHOW PAGE
 
+// GET EDIT
+//THIS RENDERS AN EDIT PAGE WHERE YOU CAN EDIT TASKS
 app.get('/tasks/:id/edit', function(req, res){
-console.log()
-  res.render('tasks/list.jade');
+Task.findById(req.param.id, function (err, task){
+    res.render('tasks/edit.jade', {task: task});
+  });
 });
+//HOW CAN I GET THE EDIT FUNCTION TO RENDER TWO INPUT FIELDS THAT DEFAULT TO THE VALUES ASSOCIATED WITH THE ID
 
 
 //POST  
-
+//WHEN I CLICK SUBMIT BUTTON THE APPLICATION POSTS TO THE SERVER AND REDIRECTS TO /TASKS
 app.post('/tasks', function(req,res){
-  // console.log(req)
+  //WE CREATE A VARIABLE THAT POINTS TO OUR MODEL 
   var newTask = new Task({
     title: req.param('taskTitle'),
     notes: req.param('taskNotes')
   });
-  // console.log(newTask);
-   // look at docs for params in express
-
+//THEN WE CALL THE SAVE METHOD ON THAT VARIABLE THAT POINTS TO OUR MODEL 
     newTask.save(function(wert, task){
       if(wert){res.send(500, wert);}
       res.redirect('/tasks');
     });
-})
+});
 //UPDATE
 
-// app.put('/tasks/:Mongo DB', function(req,res){
-  
-//   var id = req.param('id');
-
-//   TaskItem.findOne({_id: MongoDB Number}, function(){
-
-//   })
-// })
+app.put('/tasks/:id', function(req,res){
+  var id = req.param('id');
+  Task.findOneAndUpdate(
+    {_id: id}, 
+    {
+      title: req.param("taskTitle"), 
+      notes: req.param("taskNotes")
+    }, 
+    function(err, task){
+      res.redirect('/tasks');
+    });
+});
 
 //DELETE
 
-// app.put('/items/id', function(req, res))
+app.delete('/tasks/:id', function(req, res){
+ Task.findByIdAndRemove(req.param('id'), function(err, task){
+    res.redirect('/tasks');
+ });
+});
 
 
 
