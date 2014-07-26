@@ -12,7 +12,7 @@ var app = express();
 
 //THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
 app.set('views', __dirname + '/templates');
-app.set('views', __dirname + '/public')
+
 
 //THIS CONNECTS THE MIDDLEWARE THAT EXPRESS NEEDS 
 app.use(bodyParser.json());
@@ -28,7 +28,8 @@ var Schema = mongoose.Schema;
 var teuxdeuxSchema = new Schema({
   title : String, //THIS IS ONE FIELD
   notes: String,  //THIS IS ANOTHER FIELD TO SEARCH ON
-  created_at: Date
+  created_at: Date,
+  checked: Boolean
 });
 
 //THIS ASSIGNS A VARIABLE TASK SO WE CAN CALL METHODS IN MONGOOSE 
@@ -81,6 +82,16 @@ app.post('/tasks', function(req,res){
       if(wert){res.send(500, wert);}
       res.redirect('/tasks');
     });
+});
+
+app.post('/tasks/completed/:id', function(req,res){
+  Task.findById(req.param('id'), function(err, task){
+    task.checked = !task.checked;
+    task.save(function(err, t){
+      if(err) res.send(500, err);
+      res.redirect('/tasks');
+    });
+  });  
 });
 //UPDATE
 
