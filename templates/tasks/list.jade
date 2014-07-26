@@ -4,10 +4,10 @@ block content
   h1 Some content
     ul
       each task in taskCollection
-        li
+        li(class= (task.checked? "green" : "" ))
           form(action="/tasks/completed/#{task._id}", method="POST", encytpe="application/x-www-form-urlencoded")
             input#checkbox(type='checkbox', name="task", checked=(task.checked? "checked" : undefined))
-            button Submit 
+            button Submit
           a(href='tasks/#{task._id}')
           span.title= task.title
           br

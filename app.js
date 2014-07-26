@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(methodOverride('_method'));
+app.use(express.static(__dirname + '/public'));
 
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
 var Schema = mongoose.Schema;
@@ -96,7 +97,7 @@ app.post('/tasks/completed/:id', function(req,res){
 //UPDATE
 
 app.put('/tasks/:id', function(req,res){
-  var id = req.param('id');
+  var id = req.param.id;
   Task.findOneAndUpdate(
     {_id: id}, 
     {
