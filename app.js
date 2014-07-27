@@ -5,7 +5,7 @@ var jade = require('jade');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux')
+mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux');
 //THIS VARIABLE IS SO WE CAN CALL METHODS IN EXPRESS ON THE OUR APPLICATION
 var app = express();
 
@@ -91,6 +91,7 @@ app.post('/tasks/completed/:id', function(req,res){
     task.save(function(err, t){
       if(err) res.send(500, err);
       res.redirect('/tasks');
+      console.log("Hi Justin");
     });
   });  
 });
