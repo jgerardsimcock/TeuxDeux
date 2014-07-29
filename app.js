@@ -54,11 +54,12 @@ app.get('/tasks/new', function(req, res){
 });
 
 // GET SHOW
-app.get('tasks/:id', function(req, res){
-console.log(req.param.id);
-  //THIS CALLS THE FINDBYID METHOD ON OUR TASK MODEL
-  Task.findById(req.param.id, function (err, task){
-    res.render('tasks/show.jade'), {taskCollection: task};
+app.get('/tasks/:id', function(req, res){
+  var id = req.params.id;
+  console.log("someurl");
+  // //THIS CALLS THE FINDBYID METHOD ON OUR TASK MODEL
+  Task.findById(id, function (err, task){
+    res.render('tasks/show.jade', {task: task});
   });
 });
 
@@ -66,14 +67,10 @@ console.log(req.param.id);
 
 // GET EDIT
 //THIS RENDERS AN EDIT PAGE WHERE YOU CAN EDIT TASKS
-app.get('tasks/:id/edit', function(req, res){
-Task.findById(req.param.id), function (err, task){
-    if(err) {res.send(500, err);
-        res.redirect('/tasks');
-        console.log("Hi Justin");
-    }
-    res.render('tasks/edit.jade', {taskCollection: task});
-  };
+app.get('/tasks/:id/edit', function(req, res){
+  Task.findById(req.params.id, function (err, task){
+    res.render('tasks/edit.jade', {task: task});
+  });
 });
 //HOW CAN I GET THE EDIT FUNCTION TO RENDER TWO INPUT FIELDS THAT DEFAULT TO THE VALUES ASSOCIATED WITH THE ID
 
@@ -94,7 +91,7 @@ app.post('/tasks', function(req,res){
 });
 
 app.post('/tasks/completed/:id', function(req,res){
-  Task.findById(req.param('id'), function(err, task){
+  Task.findById(req.params.id, function(err, task){
     task.checked = !task.checked;
     task.save(function(err, t){
       if(err) res.send(500, err);
@@ -106,7 +103,7 @@ app.post('/tasks/completed/:id', function(req,res){
 //UPDATE
 
 app.put('/tasks/:id', function(req,res){
-  var id = req.param.id;
+  var id = req.params.id;
   Task.findOneAndUpdate(
     {_id: id}, 
     {
@@ -121,7 +118,7 @@ app.put('/tasks/:id', function(req,res){
 //DELETE
 
 app.delete('/tasks/:id', function(req, res){
- Task.findByIdAndRemove(req.param('id'), function(err, task){
+ Task.findByIdAndRemove(req.params.id, function(err, task){
     res.redirect('/tasks');
  });
 });
