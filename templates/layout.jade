@@ -3,8 +3,15 @@ html
   head
     block title
       title Some Title
+      link(rel="stylesheet" href="css/normalize.css")
+      link(rel="stylesheet" href="css/foundation.css")
       script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
       script(src="/js/jqueryStuff.js")
       link(href="/stylesheets.css", type="text/css", rel="stylesheet")
+      script(src="js/vendor/modernizr.js")
+      script(src="js/vendor/jquery.js")
+      script(src="js/foundation.min.js")
   body
     block content
+      div.row
+        div.small-12 columns

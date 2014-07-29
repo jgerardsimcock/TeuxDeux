@@ -11,7 +11,8 @@ var app = express();
 
 
 //THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
-app.set('views', __dirname + '/templates');
+
+
 
 
 //THIS CONNECTS THE MIDDLEWARE THAT EXPRESS NEEDS 
@@ -20,6 +21,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(methodOverride('_method'));
+
+app.set('views', __dirname + '/templates');
 app.use(express.static(__dirname + '/public'));
 
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
@@ -46,15 +49,16 @@ app.get('/tasks', function(req, res){
 
 // GET NEW
 //THIS RENDERS THE PAGE WITH THE EMPTY FORMS TO BE SUBMITTED
-app.get('/tasks/new', function(req, res){
+app.get('/tasks/new', function(req, res){  
   res.render('tasks/new.jade');
 });
 
 // GET SHOW
-app.get('/tasks/:id', function(req, res){
+app.get('tasks/:id', function(req, res){
+console.log(req.param.id);
   //THIS CALLS THE FINDBYID METHOD ON OUR TASK MODEL
-Task.findById(req.param.id, function (err, task){
-    res.render('tasks/show.jade', {task: task});
+  Task.findById(req.param.id, function (err, task){
+    res.render('tasks/show.jade'), {taskCollection: task};
   });
 });
 
@@ -62,10 +66,14 @@ Task.findById(req.param.id, function (err, task){
 
 // GET EDIT
 //THIS RENDERS AN EDIT PAGE WHERE YOU CAN EDIT TASKS
-app.get('/tasks/:id/edit', function(req, res){
-Task.findById(req.param.id, function (err, task){
-    res.render('tasks/edit.jade', {task: task});
-  });
+app.get('tasks/:id/edit', function(req, res){
+Task.findById(req.param.id), function (err, task){
+    if(err) {res.send(500, err);
+        res.redirect('/tasks');
+        console.log("Hi Justin");
+    }
+    res.render('tasks/edit.jade', {taskCollection: task});
+  };
 });
 //HOW CAN I GET THE EDIT FUNCTION TO RENDER TWO INPUT FIELDS THAT DEFAULT TO THE VALUES ASSOCIATED WITH THE ID
 
@@ -117,17 +125,6 @@ app.delete('/tasks/:id', function(req, res){
     res.redirect('/tasks');
  });
 });
-
-
-
-
-
-
-// app.del('/', function(req,res))
-
-
-
-
 
 
 

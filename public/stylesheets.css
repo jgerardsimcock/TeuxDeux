@@ -7,3 +7,6 @@ background-color: green;
 
 }
 
+@media only screen { } /* Define mobile styles */
+
+@media only screen and (max-width: 40em) { }
