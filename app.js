@@ -31,7 +31,7 @@ app.use(methodOverride('_method'));
 
 app.set('views', __dirname + '/templates');
 app.use(express.static(__dirname + '/public'));
-app.use(session({secret: 'keyboard cat'}));
+app.use(session({secret: 'word'}));
 
 //You need to create a schema in Mongoose
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
@@ -58,7 +58,7 @@ app.get('/tasks', function(req, res){//you need / in the route for
       Task.find(function (err, task){
         res.render('tasks/list.jade', {taskCollection: task}); //
     });
-  } else{ 
+  } else{ //not logged in
       res.redirect('/login');
     }
 });
@@ -103,31 +103,29 @@ app.get('/login', function(req, res){
 
 app.post('/login', function(req,res){
   var errors = '';
-  if(req.params.username === undefined || req.params.username === ''){
+  if(req.param('username') === undefined || req.param('username') === ''){
     errors = " Missing Username ";
   }  
-  if(req.params.password === undefined || req.params.password === ''){
+  if(req.param('password') === undefined || req.param('password') === ''){
     errors += " Missing Password ";
   }
-
+  console.log(req.param('username'));
   // Authenticate
-  // if(errors.length === 0){
+  if(errors.length === 0){
     //fake username and password
-    if(req.params.username === fake_Username && req.params.password === fake_Password){
-      req.session.user = {
-        id: '1',
+    if(req.param('username') === fake_Username && req.param('password')=== fake_Password){
+      var user = {
+        id: 1,
         username : fake_Username,
         password : fake_Password
       };
-     res.redirect('/tasks');
-     return;
-  } else {
+      req.session.user = user;
+      res.redirect('/tasks');
+    } else {
       errors += "Incorrect User Name and Password";
     }
-
-
-res.render('users/login.jade', { errors: errors } );
-
+  }
+  res.render('users/login.jade', { errors: errors } );
 });
 
 
