@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1 Please login
+  form(action="/tasks", method="POST" enctype="application/x-www-form-urlencoded")
+      p
+        label(for="username") Username
+        input#username(type="text", name="userName", value='Please type your username')
+      p
+        label(for="password") Password
+        input#password(type="text", name="passWord", value='Please type your password')
+      
+      button Submit

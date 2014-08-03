@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   div#taskCount
-  h1
+  h1 
     ul
     each task in taskCollection
       li(class= (task.checked? "green" : "incomplete" ))
