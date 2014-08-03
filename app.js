@@ -7,6 +7,7 @@ var jade = require('jade');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var session = require('express-session');
 mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux');
 
 //we need to access the express framework
@@ -30,6 +31,7 @@ app.use(methodOverride('_method'));
 
 app.set('views', __dirname + '/templates');
 app.use(express.static(__dirname + '/public'));
+app.use(session({secret: 'keyboard cat'}));
 
 //You need to create a schema in Mongoose
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
@@ -52,9 +54,13 @@ var Task = mongoose.model('tasks', teuxdeuxSchema);//'tasks' will show up in mon
 
 //The user sees url/tasks and this sends a get request to server
 app.get('/tasks', function(req, res){//you need / in the route for 
-  Task.find(function (err, task){ //.find is a mongoose method to find a particular object
-    res.render('tasks/list.jade', {taskCollection: task}); //
-  });
+    if( req.session.user !== undefined){
+      Task.find(function (err, task){
+        res.render('tasks/list.jade', {taskCollection: task}); //
+    });
+  } else{ 
+      res.redirect('/login');
+    }
 });
 
 // GET NEW
@@ -83,6 +89,7 @@ app.get('/tasks/:id/edit', function(req, res){
 });
 //HOW CAN I GET THE EDIT FUNCTION TO RENDER TWO INPUT FIELDS THAT DEFAULT TO THE VALUES ASSOCIATED WITH THE ID
 
+// LOGIN and LOGOUT
 
 //LOGIN
 
@@ -92,26 +99,35 @@ app.get('/login', function(req, res){
 });
 
 
-//Password Login 
+//Login 
 
 app.post('/login', function(req,res){
-  var errors = [];
+  var errors = '';
   if(req.params.username === undefined || req.params.username === ''){
-    errors.push("Missing Username");
+    errors = " Missing Username ";
   }  
   if(req.params.password === undefined || req.params.password === ''){
-    errors.push("Missing Password");
+    errors += " Missing Password ";
   }
 
-  //Authenticate
-  if(errors.length === 0){
+  // Authenticate
+  // if(errors.length === 0){
     //fake username and password
-    if(req.params.username == fake_Username && req.params.password === fake_Password)
+    if(req.params.username === fake_Username && req.params.password === fake_Password){
+      req.session.user = {
+        id: '1',
+        username : fake_Username,
+        password : fake_Password
+      };
      res.redirect('/tasks');
-  } else{
+     return;
+  } else {
+      errors += "Incorrect User Name and Password";
+    }
 
-  }
-  
+
+res.render('users/login.jade', { errors: errors } );
+
 });
 
 
@@ -163,7 +179,10 @@ app.delete('/tasks/:id', function(req, res){
  });
 });
 
-
+app.get('/logout', function(req, res) {
+  req.session.user = undefined;
+  res.redirect('/login');
+});
 
 var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);

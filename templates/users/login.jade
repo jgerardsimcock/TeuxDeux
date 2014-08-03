@@ -2,12 +2,15 @@ extends ../layout
 
 block content
   h1 Please login
-  form(action="/tasks", method="POST" enctype="application/x-www-form-urlencoded")
+  if errors != ''
+    p.errors
+      = errors
+  form(action="/login", method="POST" enctype="application/x-www-form-urlencoded")
       p
-        label(for="username") Username
-        input#username(type="text", name="userName", value='Please type your username')
-      p
-        label(for="password") Password
-        input#password(type="text", name="passWord", value='Please type your password')
+        label(for="username_input") Username 
+        input#username(type="text", name="userName")
+      p 
+        label(for="password_input") Password 
+        input#password(type="password", name="passWord")
       
       button Submit
