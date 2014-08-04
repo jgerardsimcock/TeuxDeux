@@ -14,10 +14,10 @@ mongoose.connect('mongodb://taskuser:1234@ds027709.mongolab.com:27709/teuxdeux')
 //THIS VARIABLE IS SO WE CAN CALL METHODS IN EXPRESS ON THE OUR APPLICATION
 var app = express();
 
-var fake_Username = "justin";
+//THESE ARE USED TO TEST FUNCTIONALITY
+var fake_Username = "justin"; 
 var fake_Password = "justin";
 
-//THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
 
 
 
@@ -28,10 +28,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(methodOverride('_method'));
+app.use(session({secret: 'word'}));
 
+//THIS SETS THE VIEWS IN EXPRESS TO OUR TEMPLATES DIRECTORY
 app.set('views', __dirname + '/templates');
 app.use(express.static(__dirname + '/public'));
-app.use(session({secret: 'word'}));
+
 
 //You need to create a schema in Mongoose
 //THIS CREATES A NEW SCHEMA IN MONGOOSE
@@ -54,9 +56,9 @@ var Task = mongoose.model('tasks', teuxdeuxSchema);//'tasks' will show up in mon
 
 //The user sees url/tasks and this sends a get request to server
 app.get('/tasks', function(req, res){//you need / in the route for 
-    if( req.session.user !== undefined){
-      Task.find(function (err, task){
-        res.render('tasks/list.jade', {taskCollection: task}); //
+    if( req.session.user !== undefined){//.USER IS DEFINED LATER
+      Task.find(function (err, task){//THIS IS MONGODB METHOD .FIND
+        res.render('tasks/list.jade', {taskCollection: task}); //THE SECOND ARGUMENT MUST MATCH THE FUNCTION ARGUMENT
     });
   } else{ //not logged in
       res.redirect('/login');
@@ -83,13 +85,12 @@ app.get('/tasks/:id', function(req, res){
 // GET EDIT
 //THIS RENDERS AN EDIT PAGE WHERE YOU CAN EDIT TASKS
 app.get('/tasks/:id/edit', function(req, res){
-  Task.findById(req.params.id, function (err, task){
+  Task.findById(req.params.id, function (err, task){//FINDBYID IS ANOTHE MONGODB METHOD
     res.render('tasks/edit.jade', {task: task});
   });
 });
 //HOW CAN I GET THE EDIT FUNCTION TO RENDER TWO INPUT FIELDS THAT DEFAULT TO THE VALUES ASSOCIATED WITH THE ID
 
-// LOGIN and LOGOUT
 
 //LOGIN
 
@@ -101,8 +102,14 @@ app.get('/login', function(req, res){
 
 //Login 
 
+//Login requires several steps. 
+//1. USer must input their information
+//2. THis information needs to be authenticated
+//3. THe server needs to render the users unique information associated with the user
+//4. 
+// The values that req.param takes is set in the .jade document.
 app.post('/login', function(req,res){
-  var errors = '';
+  var errors = ''; //THIS CREATES A VARIABLE WITH WILL BECOME A STRING
   if(req.param('username') === undefined || req.param('username') === ''){
     errors = " Missing Username ";
   }  
@@ -114,6 +121,8 @@ app.post('/login', function(req,res){
   if(errors.length === 0){
     //fake username and password
     if(req.param('username') === fake_Username && req.param('password')=== fake_Password){
+      //this part is fake. We need it to test authentication process
+      //we would normally have an entire script or function to help create users
       var user = {
         id: 1,
         username : fake_Username,
@@ -144,6 +153,7 @@ app.post('/tasks', function(req,res){
     });
 });
 
+//if we need to interact dynamically with forms and views we need to create some way to communicate to the server that the user has made changes to the form.
 app.post('/tasks/completed/:id', function(req,res){
   Task.findById(req.params.id, function(err, task){
     task.checked = !task.checked; //this will change the state of .checked to its opposite
