@@ -1,4 +1,4 @@
-var mongoose = require('../mongoose');
+var mongoose = require('../mongoose'); 
 var express = require('express');
 var router = express.Router();
 
@@ -91,7 +91,7 @@ router.post('/tasks', function(req,res){
 //THEN WE CALL THE SAVE METHOD ON THAT VARIABLE THAT POINTS TO OUR MODEL 
     newTask.save(function(wert, task){
       if(wert){res.send(500, wert);}
-      res.redirect('/tasks');
+      res.json(newTask);
     });
 });
 

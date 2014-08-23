@@ -13,7 +13,6 @@ var tasks = require('./routes/tasks');
 //THIS VARIABLE IS SO WE CAN CALL METHODS IN EXPRESS ON THE OUR APPLICATION
 var app = express();
 
-//THESE ARE USED TO TEST FUNCTIONALITY
 
 
 var fake_Username = "justin"; 

@@ -3,12 +3,12 @@ extends ../layout
 block content
   h1 test content
   form(action="/tasks", method="POST" enctype="application/x-www-form-urlencoded")
-      p
-        label(for="title_input") Title 
-        input#title_input(type="text", name="taskTitle")
-      p
-        label(for="notes") Notes 
-        input#notes(type="text", name="taskNotes")
-      p
-        button Create Task
+    p
+      label(for="title_input") Title 
+      input#title_input(type="text", name="taskTitle")
+    p
+      label(for="notes") Notes 
+      input#notes(type="text", name="taskNotes")
+    p
+      button Add Task
       

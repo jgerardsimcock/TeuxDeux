@@ -1,9 +1,19 @@
 extends ../layout
 
 block content
+  form#newTask
+    p
+      label(for="title_input") Title 
+      input#title_input(type="text", name="taskTitle")
+    p
+      label(for="notes") Notes 
+      input#notes(type="text", name="taskNotes")
+    div
+      button Add Task
+    
   div#taskCount
   h1 
-    ul
+    ul#taskContainer
     each task in taskCollection
       li(class= (task.checked? "green" : "incomplete" ))
         form(action="/tasks/completed/#{task._id}", method="POST", encytpe="application/x-www-form-urlencoded")
