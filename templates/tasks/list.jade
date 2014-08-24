@@ -1,6 +1,7 @@
 extends ../layout
 
 block content
+
   form#newTask
     p
       label(for="title_input") Title 
@@ -11,19 +12,17 @@ block content
     div
       button Add Task
     
-  div#taskCount
-  h1 
-    ul#taskContainer
+  div#taskCount 
+
+  ul#taskContainer
     each task in taskCollection
       li(class= (task.checked? "green" : "incomplete" ))
         form(action="/tasks/completed/#{task._id}", method="POST", encytpe="application/x-www-form-urlencoded")
           input.checkbox(type='checkbox', name="task", checked=(task.checked? "checked" : undefined))
         a(href='/tasks/#{task._id}')
           span.title= task.title
-          br
           span.notes= task.notes
-        br
-        form(action="/tasks/#{task._id}?_method=DELETE", method="POST" enctype="application/x-www-form-urlencoded")
-               button Delete task  
+        form#deleteButton(action="/tasks/#{task._id}?_method=DELETE", method="POST" enctype="application/x-www-form-urlencoded")
+           button Delete task  
 
         

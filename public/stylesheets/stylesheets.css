@@ -7,6 +7,25 @@ background-color: green;
 
 }
 
+span{
+  display: block;
+}
+
+a{ 
+  display: block;
+}
+
+#newTask{ 
+  margin-left: 400px;
+  margin-right: 400px;
+
+}
+
+#taskContainer{
+  margin-left: 400px;
+  margin-right: 400px;
+}
+
 @media only screen { } /* Define mobile styles */
 
 @media only screen and (max-width: 40em) { }
