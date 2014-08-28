@@ -5,17 +5,21 @@ block content
   div#mainContainer
     div#titleContainer
       h1 TuDuCe
-    div#borderContainer  
+    div#borderContainer 
+    div#verticalDivContainer
     div#taskAddContainer
-    form#newTask
-      p
-        label(for="title_input") Title 
-        input#title_input(type="text", name="taskTitle")
-      p
-        label(for="notes") Notes 
-        input#notes(type="text", name="taskNotes")
-      div
-        button Add Task
+      div#addTaskButton
+        button 
+          i.fa.fa-plus-square-o.fa-3x
+      div#newTask
+      form
+        p
+          label(for="title_input") 
+          input#title_input(type="text", placeholder="Title" name="taskTitle")
+        p
+          label(for="notes") 
+          input#notes(type="text", placeholder="Notes" name="taskNotes")
+        
       
     div#taskCount 
     div#taskViewContainer
@@ -29,7 +33,7 @@ block content
               span.notes= task.notes
             form#deleteButton(action="/tasks/#{task._id}?_method=DELETE", method="POST" enctype="application/x-www-form-urlencoded")
                button
-                i.fa.fa-times
+                i.fa.fa-times.fa-3x
 
 
 
