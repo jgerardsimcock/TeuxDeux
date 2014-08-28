@@ -32,6 +32,8 @@ $('#deleteButton').submit(function(event){
 
 });
 
+
+//this is done by clicking an icon
 function deleteTask(){
       $(this).closest('li').remove();
       // taskCounter();
@@ -100,6 +102,9 @@ function taskCounter(){
     taskCounter();
   } 
 
+
+
+//Remove checkbox, use check icon to indicate something complete
 
 
 

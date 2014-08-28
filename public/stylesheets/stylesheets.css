@@ -1,3 +1,40 @@
+body{
+  font-family: 'Lora', serif;
+  background-color: #FFEFDB;
+  background-image:url('/images/seamless_paper_texture.png');
+
+}
+
+#titleContainer{
+ 
+}
+#titleContainer h1{
+  text-align: center;
+  font-size: 70px;
+  color: #D1D1D1;
+  /*text-shadow: 1px 1px 0 #000, */
+}
+button{
+  font-family: 'Lora', serif;
+  border-radius: 3px;
+  height: 15px;
+  width: 15px;
+  background-color: grey;
+  
+}
+input[type=text] {
+  border-radius: 5px;
+   
+}
+input[type=checkbox]{
+  display: inline;
+}
+i{
+  float:right;
+}
+#deleteButton{
+  float:right;
+}
 li {
   list-style-type: none;
 }
@@ -6,13 +43,12 @@ text-decoration: line-through;
 background-color: green;
 
 }
-
-span{
-  display: block;
+span.title{
+  float: left;
+  margin-right: 30px;
 }
-
-a{ 
-  display: block;
+a{
+  text-decoration: none;
 }
 
 #newTask{ 
