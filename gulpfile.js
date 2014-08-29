@@ -1,16 +1,18 @@
 var gulp = require('gulp'),
   minify = require('gulp-minify-css'),
-  livereload = require('gulp-livereload'),
-  nodemon = require('gulp-nodemon');
+  // livereload = require('gulp-livereload'),
+  // nodemon = require('gulp-nodemon'),
+  less = require('gulp-less-sourcemap');
   
 
-var paths = {
-  css: './assets/css/*.css',
-  js: '/.assets/js/*.js'
-};
+// var paths = {
+//   // css: './assets/css/*.css',
+//   js: '/.assets/js/*.js'
+// };
 
-gulp.task('css', function(){
-  return gulp.src('css/style.css')
+gulp.task('less', function(){
+  return gulp.src('./assets/less/style.less')
+    .pipe(less())
     .pipe(minify())
     .pipe(gulp.dest('./public/css'));
 });
